@@ -1,4 +1,4 @@
-package osp.sparkj.cartoon.cubic
+package osp.sparkj.cartoon.curves
 
 import android.view.animation.Interpolator
 import kotlin.math.absoluteValue
@@ -7,10 +7,15 @@ import kotlin.math.absoluteValue
  * @author yun.
  * @date 2022/6/26
  * @des [https://cubic-bezier.com/]
- * @since [https://github.com/mychoices]
- * <p><a href="https://github.com/mychoices">github</a>
+ * @since [https://github.com/ZuYun]
+ * <p><a href="https://github.com/ZuYun">github</a>
  */
-class Cubic(val a: Double, val b: Double, val c: Double, val d: Double) : Interpolator {
+class Curve(
+    private val a: Double,
+    private val b: Double,
+    private val c: Double,
+    private val d: Double
+) : Interpolator {
     private val _cubicErrorBound = 0.001
 
     override fun getInterpolation(t: Float): Float {
@@ -19,7 +24,8 @@ class Cubic(val a: Double, val b: Double, val c: Double, val d: Double) : Interp
         while (true) {
             val midpoint = (start + end) / 2
             val estimate = _evaluateCubic(a, c, midpoint)
-            if ((t - estimate).absoluteValue < _cubicErrorBound) return _evaluateCubic(b, d, midpoint).toFloat()
+            if ((t - estimate).absoluteValue < _cubicErrorBound)
+                return _evaluateCubic(b, d, midpoint).toFloat()
             if (estimate < t) start = midpoint else end = midpoint
         }
     }

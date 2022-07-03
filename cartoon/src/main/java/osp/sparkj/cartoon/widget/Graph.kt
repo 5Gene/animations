@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.CallSuper
 import osp.sparkj.cartoon.dp
 import kotlin.concurrent.thread
 
@@ -15,11 +16,58 @@ import kotlin.concurrent.thread
  * @since [https://github.com/ZuYun]
  * <p><a href="https://github.com/ZuYun">github</a>
  */
-class Curve @JvmOverloads constructor(
+abstract class Graph @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
+    open val xOffset: Float by lazy {
+        debugPaint.strokeWidth
+    }
+    open val yOffset: Float by lazy {
+        debugPaint.strokeWidth
+    }
+
+    open val showCoordinateSystem = false
+
+    val debugPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.YELLOW
+        style = Paint.Style.STROKE
+        strokeWidth = 1.dp
+    }
+
+    fun coordinateSystemHeight(paint: Paint?): Float {
+        return height - yOffset - (paint?.strokeWidth ?: 0F)
+    }
+
+    fun coordinateSystemWidth(paint: Paint?): Float {
+        return width - xOffset - (paint?.strokeWidth ?: 0F)
+    }
+
+    @CallSuper
+    override fun onDraw(canvas: Canvas) {
+        //<editor-fold desc="转为正常坐标系">
+        canvas.translate(xOffset, height.toFloat() - yOffset)
+        canvas.scale(1F, -1F)
+        //</editor-fold>
+        if (showCoordinateSystem) {//纵轴
+            canvas.drawLine(xOffset, -yOffset, xOffset, height.toFloat(), debugPaint)
+            //横轴
+            canvas.drawLine(-xOffset, yOffset, width.toFloat(), yOffset, debugPaint)
+        }
+
+    }
+}
+
+class ProgressGraph @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : Graph(context, attrs, defStyleAttr) {
+
     val dp5 = 5.dp
+
+    override val yOffset: Float by lazy {
+        dp5
+    }
+
     var points: List<PointF> = mutableListOf()
     val linePath = Path()
     val bgLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -51,7 +99,7 @@ class Curve @JvmOverloads constructor(
             0F,
             0F,
             h.toFloat(),
-            intArrayOf(Color.TRANSPARENT,Color.parseColor("#66FFFFFF")),
+            intArrayOf(Color.TRANSPARENT, Color.parseColor("#66FFFFFF")),
             floatArrayOf(0F, h.toFloat()),
             Shader.TileMode.CLAMP
         )
@@ -61,11 +109,7 @@ class Curve @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        val save = canvas.save()
-        //<editor-fold desc="转为正常坐标系">
-        canvas.translate(0F, height.toFloat() - dp5)
-        canvas.scale(1F, -1F)
-        //</editor-fold>
+        super.onDraw(canvas)
         canvas.drawPath(linePath, bgLinePaint)
         if (prog > 0) {
 //            canvas.drawPoint(currentPoint.x, currentPoint.y, dotPaint)
@@ -76,7 +120,6 @@ class Curve @JvmOverloads constructor(
             canvas.drawPath(linePath, progPaint)
             canvas.restoreToCount(saveProgress)
         }
-        canvas.restoreToCount(save)
     }
 
     fun feeding(points: List<PointF>) {
@@ -107,7 +150,8 @@ class Curve @JvmOverloads constructor(
         }
         val firstw = points.first().x
         val totalw = points.last().x - firstw
-        val ratiow = width / totalw
+        val ratiow = coordinateSystemWidth(bgLinePaint) / totalw
+        val height = coordinateSystemHeight(bgLinePaint)
         val ratioh = (height - 2 * dp5) / (max!!.y - min!!.y)
         val halfHeight = height / 2
         linePath.reset()
@@ -115,7 +159,7 @@ class Curve @JvmOverloads constructor(
         val coordinates = points.mapIndexed { index, element ->
             val y = (element.y - min.y) * ratioh
             val pointf = PointF(
-                (element.x - firstw) * ratiow, halfHeight + (y-halfHeight )*_scaleX
+                (element.x - firstw) * ratiow, halfHeight + (y - halfHeight) * _scaleX
             )
             if (linePath.isEmpty) {
                 linePath.moveTo(pointf.x, pointf.y)

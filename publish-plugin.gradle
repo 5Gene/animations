@@ -27,7 +27,7 @@ publishing {
     }
     publications {
         //name会成为任务名字的一部分 publish [Surgery] PublicationToLocalTestRepository
-        surgery(MavenPublication) {
+        osp(MavenPublication) {
             groupId rootProject.ext.GROUP_ID
             artifactId rootProject.ext.ARTIFACT_ID
             version rootProject.ext.VERSION

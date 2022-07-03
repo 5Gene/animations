@@ -1,18 +1,20 @@
 package osp.sparkj.cartoon.extend
 
 import android.animation.*
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Interpolator
 import androidx.transition.*
+import osp.sparkj.cartoon.curves.Curve
 import kotlin.math.absoluteValue
 
 /**
  * @author yun.
  * @date 2022/6/26
  * @des [一句话描述]
- * @since [https://github.com/mychoices]
- * <p><a href="https://github.com/mychoices">github</a>
+ * @since [https://github.com/ZuYun]
+ * <p><a href="https://github.com/ZuYun">github</a>
  */
 
 class ScaleTransition : Visibility() {
@@ -45,13 +47,13 @@ class ScaleTransition : Visibility() {
         val alpha = startValues.values[ALPHA]
         val animatorSet = AnimatorSet()
         val scaleXani = ObjectAnimator.ofFloat(view, "scaleX", scaleX.toString().toFloat(), 1F).apply {
-            interpolator = Cubic(.2,.02,.1,1.5)
+            interpolator = Curve(.2,.02,.1,1.5)
         }
         val scaleYani = ObjectAnimator.ofFloat(view, "scaleY", scaleY.toString().toFloat(), 1F).apply {
-            interpolator = Cubic(.2,.02,.1,1.5)
+            interpolator = Curve(.2,.02,.1,1.5)
         }
         val alphaAni = ObjectAnimator.ofFloat(view, "alpha", alpha.toString().toFloat(), 1F).apply {
-            interpolator = Cubic(.99,.39,.98,.83)
+            interpolator = Curve(.99,.39,.98,.83)
         }
         animatorSet.playTogether(scaleXani, scaleYani, alphaAni)
         return animatorSet
@@ -76,36 +78,17 @@ class ScaleTransition : Visibility() {
         val animatorSet = AnimatorSet()
         val scaleXani = ObjectAnimator.ofFloat(view, "scaleX", scaleX.toString().toFloat(), 0F).apply {
 //            interpolator = AccelerateDecelerateInterpolator()
-            interpolator = Cubic(.0,-0.29,.97,.06)
+            interpolator = Curve(.0,-0.29,.97,.06)
         }
         val scaleYani = ObjectAnimator.ofFloat(view, "scaleY", scaleY.toString().toFloat(), 0F).apply {
 //            interpolator = AccelerateDecelerateInterpolator()
-            interpolator = Cubic(.0,-0.29,.97,.06)
+            interpolator = Curve(.0,-0.29,.97,.06)
         }
         val alphaAni = ObjectAnimator.ofFloat(view, "alpha", alpha.toString().toFloat(), 0F).apply {
-            interpolator = Cubic(.99,.39,.98,.83)
+            interpolator = Curve(.99,.39,.98,.83)
         }
         animatorSet.playTogether(scaleXani, scaleYani, alphaAni)
         return animatorSet
-    }
-}
-
-class Cubic(val a: Double, val b: Double, val c: Double, val d: Double) : Interpolator {
-    val _cubicErrorBound = 0.001
-
-    override fun getInterpolation(t: Float): Float {
-        var start = 0.0
-        var end = 1.0
-        while (true) {
-            val midpoint = (start + end) / 2
-            val estimate = _evaluateCubic(a, c, midpoint)
-            if ((t - estimate).absoluteValue < _cubicErrorBound) return _evaluateCubic(b, d, midpoint).toFloat()
-            if (estimate < t) start = midpoint else end = midpoint
-        }
-    }
-
-    fun _evaluateCubic(a: Double, b: Double, m: Double): Double {
-        return 3 * a * (1 - m) * (1 - m) * m + 3 * b * (1 - m) * m * m + m * m * m
     }
 }
 
@@ -114,6 +97,7 @@ fun scaleTransition(): Transition = TransitionSet().apply {
     addTransition(ChangeBounds())
 }
 
+@SuppressLint("ObjectAnimatorBinding")
 fun ViewGroup.trans() {
     val transition = LayoutTransition()
     val alpha = PropertyValuesHolder.ofFloat("alpha", 0F, 1F)
