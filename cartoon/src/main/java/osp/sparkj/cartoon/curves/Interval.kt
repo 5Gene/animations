@@ -32,3 +32,67 @@ fun Float.clamp(lowerLimit: Float, upperLimit: Float): Float {
     }
     return this
 }
+
+//波浪插值
+
+class WaveInterpolator(
+    private val index: Int,
+    private val size: Int,
+    private val eachDuration: Float = .5F,
+    private val curve: Interpolator = LinearInterpolator()
+) : Interpolator {
+
+    override fun getInterpolation(progress: Float): Float {
+        val interval = ((1 - eachDuration) / size).toDouble()
+        val offset = interval * (index + 1)
+        if (progress <= offset) {
+            return 0F
+        }
+        val newProgress = progress - offset
+        return if (newProgress >= eachDuration) {
+            1F
+        } else curve.getInterpolation((newProgress / eachDuration).toFloat())
+    }
+}
+
+class Wave(
+    private val eachDuration: Float = .5F,
+    private val curve: Interpolator = LinearInterpolator()
+) {
+    fun wave(index: Int, size: Int, progress: Float): Float {
+        val interval = ((1 - eachDuration) / size).toDouble()
+        val offset = interval * (index + 1)
+        if (progress <= offset) {
+            return 0F
+        }
+        val newProgress = progress - offset
+        return if (newProgress >= eachDuration) {
+            1F
+        } else curve.getInterpolation((newProgress / eachDuration).toFloat())
+    }
+}
+
+fun wave(index: Int, size: Int, progress: Float, eachDuration: Float = .5F): Float {
+    val interval = ((1 - eachDuration) / size).toDouble()
+    val offset = interval * (index + 1)
+    if (progress <= offset) {
+        return 0F
+    }
+    val newProgress = progress - offset
+    return if (newProgress >= eachDuration) {
+        1F
+    } else (newProgress / eachDuration).toFloat()
+}
+
+//5.wave(10)(.3F)(.5F)
+fun Int.wave(size: Int) = fun(progress: Float) = fun(eachDuration: Float): Float {
+    val interval = ((1 - eachDuration) / size).toDouble()
+    val offset = interval * (this + 1)
+    if (progress <= offset) {
+        return 0F
+    }
+    val newProgress = progress - offset
+    return if (newProgress >= eachDuration) {
+        1F
+    } else (newProgress / eachDuration).toFloat()
+}
