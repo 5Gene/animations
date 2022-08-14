@@ -1,6 +1,7 @@
 package osp.sparkj.cartoon.curves
 
 import android.view.animation.Interpolator
+import androidx.compose.animation.core.Easing
 import kotlin.math.absoluteValue
 
 /**
@@ -15,7 +16,7 @@ class Curve(
     private val b: Double,
     private val c: Double,
     private val d: Double
-) : Interpolator {
+) : Interpolator, Easing {
     private val _cubicErrorBound = 0.001
 
     override fun getInterpolation(t: Float): Float {
@@ -32,5 +33,9 @@ class Curve(
 
     private fun _evaluateCubic(a: Double, b: Double, m: Double): Double {
         return 3 * a * (1 - m) * (1 - m) * m + 3 * b * (1 - m) * m * m + m * m * m
+    }
+
+    override fun transform(fraction: Float): Float {
+        return getInterpolation(fraction)
     }
 }

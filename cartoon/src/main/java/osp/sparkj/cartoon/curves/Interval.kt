@@ -2,6 +2,8 @@ package osp.sparkj.cartoon.curves
 
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.LinearEasing
 
 /**
  * @author yun.
@@ -13,14 +15,14 @@ import android.view.animation.LinearInterpolator
 class Interval(
     private val begin: Float,
     private val end: Float,
-    private val curve: Interpolator = LinearInterpolator()
+    private val curve: (Float)->Float = LinearInterpolator()::getInterpolation
 ) : Interpolator {
 
     override fun getInterpolation(t: Float): Float {
         val t2 = ((t - begin) / (end - begin)).clamp(0.0F, 1.0F)
         if (t2 == 0.0F || t2 == 1.0F)
             return t2
-        return curve.getInterpolation(t2)
+        return curve.invoke(t2)
     }
 }
 
@@ -39,7 +41,7 @@ class WaveInterpolator(
     private val index: Int,
     private val size: Int,
     private val eachDuration: Float = .5F,
-    private val curve: Interpolator = LinearInterpolator()
+    private val curve: (Float)->Float = LinearEasing::transform
 ) : Interpolator {
 
     override fun getInterpolation(progress: Float): Float {
@@ -51,7 +53,7 @@ class WaveInterpolator(
         val newProgress = progress - offset
         return if (newProgress >= eachDuration) {
             1F
-        } else curve.getInterpolation((newProgress / eachDuration).toFloat())
+        } else curve.invoke((newProgress / eachDuration).toFloat())
     }
 }
 
