@@ -10,18 +10,20 @@ import kotlin.math.absoluteValue
  * @des [https://cubic-bezier.com/]
  * @since [https://github.com/ZuYun]
  * <p><a href="https://github.com/ZuYun">github</a>
+ * @see androidx.compose.animation.core.CubicBezierEasing
  */
 class Curve(
-    private val a: Double,
-    private val b: Double,
-    private val c: Double,
-    private val d: Double
+    private val a: Float,
+    private val b: Float,
+    private val c: Float,
+    private val d: Float
 ) : Interpolator, Easing {
+
     private val _cubicErrorBound = 0.001
 
     override fun getInterpolation(t: Float): Float {
-        var start = 0.0
-        var end = 1.0
+        var start = 0.0F
+        var end = 1.0F
         while (true) {
             val midpoint = (start + end) / 2
             val estimate = _evaluateCubic(a, c, midpoint)
@@ -31,7 +33,7 @@ class Curve(
         }
     }
 
-    private fun _evaluateCubic(a: Double, b: Double, m: Double): Double {
+    private fun _evaluateCubic(a: Float, b: Float, m: Float): Float {
         return 3 * a * (1 - m) * (1 - m) * m + 3 * b * (1 - m) * m * m + m * m * m
     }
 

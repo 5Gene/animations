@@ -33,6 +33,7 @@ class GradientDrawable(val shperSupplyer: ShaderSupplyer = defShaperSupplyer) : 
         throw RuntimeException("not support")
     }
 
+    @Deprecated("Deprecated in Java")
     override fun getOpacity(): Int {
         return PixelFormat.TRANSLUCENT
     }

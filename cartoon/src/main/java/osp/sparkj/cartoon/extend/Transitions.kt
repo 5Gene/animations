@@ -4,10 +4,8 @@ import android.animation.*
 import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Interpolator
 import androidx.transition.*
 import osp.sparkj.cartoon.curves.Curve
-import kotlin.math.absoluteValue
 
 /**
  * @author yun.
@@ -47,13 +45,13 @@ class ScaleTransition : Visibility() {
         val alpha = startValues.values[ALPHA]
         val animatorSet = AnimatorSet()
         val scaleXani = ObjectAnimator.ofFloat(view, "scaleX", scaleX.toString().toFloat(), 1F).apply {
-            interpolator = Curve(.2,.02,.1,1.5)
+            interpolator = Curve(.2F,.02F,.1F,1.5F)
         }
         val scaleYani = ObjectAnimator.ofFloat(view, "scaleY", scaleY.toString().toFloat(), 1F).apply {
-            interpolator = Curve(.2,.02,.1,1.5)
+            interpolator = Curve(.2F,.02F,.1F,1.5F)
         }
         val alphaAni = ObjectAnimator.ofFloat(view, "alpha", alpha.toString().toFloat(), 1F).apply {
-            interpolator = Curve(.99,.39,.98,.83)
+            interpolator = Curve(.99F,.39F,.98F,.83F)
         }
         animatorSet.playTogether(scaleXani, scaleYani, alphaAni)
         return animatorSet
@@ -78,14 +76,14 @@ class ScaleTransition : Visibility() {
         val animatorSet = AnimatorSet()
         val scaleXani = ObjectAnimator.ofFloat(view, "scaleX", scaleX.toString().toFloat(), 0F).apply {
 //            interpolator = AccelerateDecelerateInterpolator()
-            interpolator = Curve(.0,-0.29,.97,.06)
+            interpolator = Curve(.0F,-0.29F,.97F,.06F)
         }
         val scaleYani = ObjectAnimator.ofFloat(view, "scaleY", scaleY.toString().toFloat(), 0F).apply {
 //            interpolator = AccelerateDecelerateInterpolator()
-            interpolator = Curve(.0,-0.29,.97,.06)
+            interpolator = Curve(.0F,-0.29F,.97F,.06F)
         }
         val alphaAni = ObjectAnimator.ofFloat(view, "alpha", alpha.toString().toFloat(), 0F).apply {
-            interpolator = Curve(.99,.39,.98,.83)
+            interpolator = Curve(.99F,.39F,.98F,.83F)
         }
         animatorSet.playTogether(scaleXani, scaleYani, alphaAni)
         return animatorSet

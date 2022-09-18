@@ -2,7 +2,7 @@ package osp.sparkj.cartoon.curves
 
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
-import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
 
 /**
@@ -15,8 +15,8 @@ import androidx.compose.animation.core.LinearEasing
 class Interval(
     private val begin: Float,
     private val end: Float,
-    private val curve: (Float)->Float = LinearInterpolator()::getInterpolation
-) : Interpolator {
+    private val curve: (Float) -> Float = LinearInterpolator()::getInterpolation
+) : Interpolator, Easing  {
 
     override fun getInterpolation(t: Float): Float {
         val t2 = ((t - begin) / (end - begin)).clamp(0.0F, 1.0F)
@@ -24,6 +24,8 @@ class Interval(
             return t2
         return curve.invoke(t2)
     }
+
+    override fun transform(fraction: Float) = getInterpolation(fraction)
 }
 
 fun Float.clamp(lowerLimit: Float, upperLimit: Float): Float {
@@ -36,13 +38,12 @@ fun Float.clamp(lowerLimit: Float, upperLimit: Float): Float {
 }
 
 //波浪插值
-
 class WaveInterpolator(
     private val index: Int,
     private val size: Int,
     private val eachDuration: Float = .5F,
-    private val curve: (Float)->Float = LinearEasing::transform
-) : Interpolator {
+    private val curve: (Float) -> Float = LinearEasing::transform
+) : Interpolator, Easing {
 
     override fun getInterpolation(progress: Float): Float {
         val interval = ((1 - eachDuration) / size).toDouble()
@@ -55,11 +56,13 @@ class WaveInterpolator(
             1F
         } else curve.invoke((newProgress / eachDuration).toFloat())
     }
+
+    override fun transform(fraction: Float) = getInterpolation(fraction)
 }
 
 class Wave(
     private val eachDuration: Float = .5F,
-    private val curve: Interpolator = LinearInterpolator()
+    private val curve: (Float)->Float = LinearInterpolator()::getInterpolation
 ) {
     fun wave(index: Int, size: Int, progress: Float): Float {
         val interval = ((1 - eachDuration) / size).toDouble()
@@ -70,7 +73,7 @@ class Wave(
         val newProgress = progress - offset
         return if (newProgress >= eachDuration) {
             1F
-        } else curve.getInterpolation((newProgress / eachDuration).toFloat())
+        } else curve((newProgress / eachDuration).toFloat())
     }
 }
 
