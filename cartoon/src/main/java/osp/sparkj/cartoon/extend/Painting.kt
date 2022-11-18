@@ -1,6 +1,7 @@
 package osp.sparkj.cartoon.extend
 
 import android.graphics.*
+import android.view.View
 import osp.sparkj.cartoon.dp
 
 /**
@@ -40,3 +41,31 @@ val Paint.textHeight: Int
         getTextBounds("0", 0, 1, bounds)
         return bounds.height()
     }
+
+context(View)
+inline fun Canvas.rotateDraw(
+    x: Float = 0F,
+    y: Float = 0F,
+    camera: Camera,
+    crossinline change: Canvas.() -> Unit = {},
+    crossinline revert: Canvas.() -> Unit = {},
+    crossinline onDraw: Canvas.() -> Unit
+) {
+    save()
+    translate(width / 2F, height / 2F)
+    revert()
+    camera.save()
+    if (x != 0F) {
+        camera.rotateX(x)
+    }
+    if (y != 0F) {
+        camera.rotateY(y)
+    }
+    camera.applyToCanvas(this)
+    camera.restore()
+    change()
+    translate(-width / 2F, -height / 2F)
+    //先变换后绘制 动作从下往上走
+    onDraw()
+    restore()
+}
