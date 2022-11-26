@@ -1,7 +1,6 @@
 package osp.sparkj.cartoon.extend
 
 import android.graphics.*
-import android.view.View
 import osp.sparkj.cartoon.dp
 
 /**
@@ -42,30 +41,68 @@ val Paint.textHeight: Int
         return bounds.height()
     }
 
-context(View)
-inline fun Canvas.rotateDraw(
-    x: Float = 0F,
-    y: Float = 0F,
-    camera: Camera,
-    crossinline change: Canvas.() -> Unit = {},
-    crossinline revert: Canvas.() -> Unit = {},
-    crossinline onDraw: Canvas.() -> Unit
+inline fun Canvas.transForm(
+    rotateX: Float = 0F, rotateY: Float = 0F,
+    //左移负数               上移负数
+    translateX: Float = 0F, translateY: Float = 0F,
+    scaleX: Float = 1F, scaleY: Float = 1F,
+    locationX: Float = 0F, locationY: Float = 0F, locationZ: Float = 0F,
+    //正数左移宽的比例          正数上移高的比例
+    widthFactor: Float = .5F, heightFactor: Float = .5F, camera: Camera? = null,
+    //在裁剪之前旋转 围绕Z轴
+    rotate: Float? = null, crossinline clip: Canvas.(Float, Float) -> Unit = { _, _ -> },
+    crossinline draw: Canvas.() -> Unit
 ) {
     save()
-    translate(width / 2F, height / 2F)
-    revert()
-    camera.save()
-    if (x != 0F) {
-        camera.rotateX(x)
+    //默认 左移动-  上移动-
+    val offsetX = width * widthFactor * -1
+    val offsetY = height * heightFactor * -1
+    //画布移动回原来的位置 (已经完成了旋转缩放后的动作)
+    translate(-offsetX + translateX, -offsetY + translateY)
+    //画布移动到中心点后 缩放
+    scale(scaleX, scaleY)
+    //裁剪和camera变换之后 旋转回去
+    rotate?.run {
+        rotate(this * -1F)
     }
-    if (y != 0F) {
-        camera.rotateY(y)
+    //画布移动到中心点后 旋转 camera旋转中心为0,0
+    camera?.let {
+        it.save()
+        if (locationX != 0F || locationY != 0F || locationZ != 0F) {
+            it.setLocation(locationX, locationY, locationZ)
+        }
+        if (rotateX != 0F) {
+            it.rotateX(rotateX)
+        }
+        if (rotateY != 0F) {
+            it.rotateY(rotateY)
+        }
+        it.applyToCanvas(this)
+        it.restore()
     }
-    camera.applyToCanvas(this)
-    camera.restore()
-    change()
-    translate(-width / 2F, -height / 2F)
-    //先变换后绘制 动作从下往上走
-    onDraw()
+    //裁剪
+    clip(offsetX, offsetY)
+    //移动到中心点后 旋转操作
+    rotate?.run {
+        rotate(this)
+    }
+    //围绕中点旋转的时候 先移动到中心点 -，-
+    translate(offsetX, offsetY)
+    //先绘制后变换 动作从下往上走
+    draw()
     restore()
+
+//                    canvas.save()
+//                    canvas.translate(width / 2, height / 2 - topOffsetValue)
+//                    canvas.scale(widthScaleValue, 1F)
+//                    camera.save()
+//                    camera.setLocation(0F, 0F, (-30).todpf)
+//                    camera.rotateX(-180F * ani)
+//                    camera.applyToCanvas(canvas)
+//                    camera.restore()
+//                    canvas.clipRect(-width, -height / 2, width, 0F)
+//                    canvas.translate(-width / 2, -height / 2)
+//                    //先绘制后变换 动作从下往上走
+//                    canvas.drawBitmap(bitmap, 0F, 0F, null)
+//                    canvas.restore()
 }
