@@ -11,7 +11,13 @@ import android.util.TypedValue
  * <p><a href="https://github.com/ZuYun">github</a>
  */
 
-val Number.dp
+inline val Number.todp: Int
+    get() = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(),
+        Resources.getSystem().displayMetrics
+    ).toInt()
+
+inline val Number.todpf
     get() = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         this.toFloat(),

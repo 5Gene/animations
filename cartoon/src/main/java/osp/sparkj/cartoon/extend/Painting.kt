@@ -1,7 +1,7 @@
 package osp.sparkj.cartoon.extend
 
 import android.graphics.*
-import osp.sparkj.cartoon.dp
+import osp.sparkj.cartoon.todpf
 
 /**
  * @author yun.
@@ -16,7 +16,7 @@ inline fun Bitmap.paint(ten: Boolean = false, drawing: (Canvas, Bitmap) -> Unit)
     val canvas = Canvas(bitmap)
     if (ten) {
         val debugPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.YELLOW }
-        debugPaint.strokeWidth = 1.dp
+        debugPaint.strokeWidth = 1.todpf
         canvas.drawLine(width / 2F, 0F, width / 2F, height.toFloat(), debugPaint)
         canvas.drawLine(0F, height / 2F, width.toFloat(), height / 2F, debugPaint)
     }

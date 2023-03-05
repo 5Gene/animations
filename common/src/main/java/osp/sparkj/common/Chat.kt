@@ -6,7 +6,6 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import java.security.SecureRandom
-import kotlin.random.Random
 
 /**
  * @author yun.
@@ -108,7 +107,6 @@ class Chart @JvmOverloads constructor(
             if (speeds.isEmpty()) {
                 return
             }
-            println("=========== ${speeds.size}")
             val max = speeds.maxByOrNull {
                 it.value
             }
