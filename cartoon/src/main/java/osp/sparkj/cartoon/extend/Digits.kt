@@ -1,4 +1,4 @@
-package osp.sparkj.cartoon
+package osp.sparkj.cartoon.extend
 
 import android.content.res.Resources
 import android.util.TypedValue
@@ -7,8 +7,8 @@ import android.util.TypedValue
  * @author yun.
  * @date 2022/6/26
  * @des [一句话描述]
- * @since [https://github.com/ZuYun]
- * <p><a href="https://github.com/ZuYun">github</a>
+ * @since [https://github.com/5hmlA]
+ * <p><a href="https://github.com/5hmlA">github</a>
  */
 
 inline val Number.todp: Int

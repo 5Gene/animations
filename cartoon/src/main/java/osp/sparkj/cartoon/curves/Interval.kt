@@ -10,8 +10,8 @@ import androidx.compose.animation.core.LinearEasing
  * @author yun.
  * @date 2022/6/26
  * @des [https://cubic-bezier.com/]
- * @since [https://github.com/ZuYun]
- * <p><a href="https://github.com/ZuYun">github</a>
+ * @since [https://github.com/5hmlA]
+ * <p><a href="https://github.com/5hmlA">github</a>
  */
 
 //progress.interval(0F,0.3F)

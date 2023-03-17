@@ -1,35 +1,26 @@
 package osp.sparkj.cartoon.widget
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.View
 import androidx.core.graphics.times
+import androidx.core.graphics.toColorInt
+import osp.sparkj.cartoon.extend.todpf
 
-
-inline val Number.todpf: Float
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(),
-        Resources.getSystem().displayMetrics
-    )
-
-fun Int.alpha(alpha: Float): Int {
-    val a = Math.min(255, Math.max(0, (alpha * 255).toInt())) shl 24
-    val rgb = 0x00Ffffff and this
-    return a + rgb
-}
-
-val dp2 = 2.todpf
-val dp4 = 4.todpf
-val dp20 = 20.todpf
-
-val black = Color.BLACK
 
 class CircleRatio @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+    fun Int.alpha(alpha: Float): Int {
+        val a = 255.coerceAtMost(0.coerceAtLeast((alpha * 255).toInt())) shl 24
+        val rgb = 0x00Ffffff and this
+        return a + rgb
+    }
+
+    val dp2 = 2.todpf
+    val dp4 = 4.todpf
+    val dp20 = 20.todpf
 
     private val textOffsetCicle = 9.todpf
     private var circleRectf = RectF()
@@ -73,10 +64,22 @@ class CircleRatio @JvmOverloads constructor(
         "测试4" to 5
     )
 
-
-    private val colorArray =
-        intArrayOf(black.alpha(5 / 10F), Color.GRAY, Color.YELLOW, Color.GREEN, Color.CYAN)
-//    val colorArray = IntArray(5) { i -> black.alpha((i+1) / 10F) }
+    private val grayColors =
+        intArrayOf(
+            "#EDEEEE".toColorInt(),
+            "#E7E8E8".toColorInt(),
+            "#E1E3E3".toColorInt(),
+            "#DCDEDF".toColorInt(),
+            "#D8DADB".toColorInt()
+        )
+    private val greenColors =
+        intArrayOf(
+            "#E7F3D7".toColorInt(),
+            "#DDF0C5".toColorInt(),
+            "#D4EEB4".toColorInt(),
+            "#CCECA5".toColorInt(),
+            "#C5EA97".toColorInt()
+        )
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
@@ -113,7 +116,6 @@ class CircleRatio @JvmOverloads constructor(
             }
             value
         }.max()
-        Color.GRAY
     }
 
     private fun stageGradient(value: Int, i: Int) {
@@ -122,7 +124,7 @@ class CircleRatio @JvmOverloads constructor(
         val size = value * 2 - 2
         val colors = IntArray(size)
         val floats = FloatArray(size) { index ->
-            colors[index] = colorArray[((index + 1) / 2)]
+            colors[index] = grayColors[((index + 1) / 2)]
             if (index % 2 == 0) {
                 floatShader * (index / 2 + 1)
             } else {
@@ -159,15 +161,15 @@ class CircleRatio @JvmOverloads constructor(
 
             //填充扇形
             circleDataPaint.style = Paint.Style.FILL
-            circleDataPaint.color = colorArray[0]
+            circleDataPaint.color = grayColors[0]
             circleDataPaint.shader = dataShaders[i]
             canvas.drawArc(dataRectF, startAngle, eachAngle, true, circleDataPaint)
 
             //扇形外环
             if (data.second == maxValue) {
-                circleDataPaint.color = Color.GREEN
+                circleDataPaint.color = greenColors[0]
             } else {
-                circleDataPaint.color = Color.GRAY
+                circleDataPaint.color = grayColors[0]
             }
             circleDataPaint.style = Paint.Style.STROKE
             circleDataPaint.shader = null

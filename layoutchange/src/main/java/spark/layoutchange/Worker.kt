@@ -2,14 +2,13 @@ package spark.layoutchange
 
 import android.view.ViewGroup
 import android.widget.Button
-import kotlin.random.Random
 
 /**
  * @author yun.
  * @date 2022/6/9
  * @des [一句话描述]
- * @since [https://github.com/ZuYun]
- * <p><a href="https://github.com/ZuYun">github</a>
+ * @since [https://github.com/5hmlA]
+ * <p><a href="https://github.com/5hmlA">github</a>
  */
 object Worker {
     fun addView(parent: ViewGroup) {

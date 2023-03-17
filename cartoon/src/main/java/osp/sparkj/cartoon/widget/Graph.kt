@@ -5,7 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.CallSuper
-import osp.sparkj.cartoon.todpf
+import osp.sparkj.cartoon.extend.todpf
 import kotlin.concurrent.thread
 
 
@@ -13,8 +13,8 @@ import kotlin.concurrent.thread
  * @author yun.
  * @date 2022/5/20
  * @des [一句话描述]
- * @since [https://github.com/ZuYun]
- * <p><a href="https://github.com/ZuYun">github</a>
+ * @since [https://github.com/5hmlA]
+ * <p><a href="https://github.com/5hmlA">github</a>
  */
 abstract class Graph @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

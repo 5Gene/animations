@@ -1,7 +1,6 @@
 package osp.sparkj.cartoon.extend
 
 import android.graphics.*
-import osp.sparkj.cartoon.todpf
 
 /**
  * @author yun.

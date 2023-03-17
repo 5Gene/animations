@@ -11,8 +11,8 @@ import java.security.SecureRandom
  * @author yun.
  * @date 2022/5/30
  * @des [一句话描述]
- * @since [https://github.com/ZuYun]
- * <p><a href="https://github.com/ZuYun">github</a>
+ * @since [https://github.com/5hmlA]
+ * <p><a href="https://github.com/5hmlA">github</a>
  */
 class Chart @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

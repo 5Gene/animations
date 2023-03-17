@@ -8,8 +8,8 @@ import kotlin.math.absoluteValue
  * @author yun.
  * @date 2022/6/26
  * @des [https://cubic-bezier.com/]
- * @since [https://github.com/ZuYun]
- * <p><a href="https://github.com/ZuYun">github</a>
+ * @since [https://github.com/5hmlA]
+ * <p><a href="https://github.com/5hmlA">github</a>
  * @see androidx.compose.animation.core.CubicBezierEasing
  */
 class Curve(
