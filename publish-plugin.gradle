@@ -6,7 +6,8 @@ apply plugin: 'maven-publish'
 //}
 
 task sourceJar(type: Jar) {
-    print sourceSets
+    from android.sourceSets.main.java.getSrcDirs() // 源码路径
+    archiveClassifier = "sources"
 }
 
 afterEvaluate {
@@ -14,7 +15,7 @@ afterEvaluate {
         repositories {
             maven {
                 name = "GithubPackages"
-                url = uri("https://maven.pkg.github.com/ZuYun/sparkj")
+                url = uri("https://maven.pkg.github.com/5hmlA/sparkj")
                 credentials {
                     username = System.getenv("GITHUB_USER")
                     password = System.getenv("GITHUB_TOKEN")
@@ -30,9 +31,11 @@ afterEvaluate {
             //name会成为任务名字的一部分 publish [Surgery] PublicationToLocalTestRepository
             osp(MavenPublication) {
                 from components.release
+                artifact sourceJar // 上传源码
                 groupId rootProject.ext.GROUP_ID
                 artifactId rootProject.ext.ARTIFACT_ID
                 version rootProject.ext.VERSION
+
 //            artifact(sourceJar)
             }
         }

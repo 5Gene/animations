@@ -5,7 +5,7 @@ plugins {
 
 rootProject.ext.GROUP_ID = "ospl.sparkj.cartoon"
 rootProject.ext.ARTIFACT_ID = "cartoon"
-rootProject.ext.VERSION = "2022.09.18"
+rootProject.ext.VERSION = "2023.03.18"
 
 apply from: file('../publish-plugin.gradle')
 
@@ -46,7 +46,7 @@ dependencies {
     implementation "androidx.annotation:annotation:1.6.0"
 //    https://developer.android.google.cn/develop/ui/views/animations/spring-animation?hl=en
 //    https://developer.android.google.cn/jetpack/androidx/releases/dynamicanimation
-    implementation 'androidx.dynamicanimation:dynamicanimation-ktx:1.1.0-alpha03'
+    implementation 'androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.compose.animation:animation-core:1.3.3'

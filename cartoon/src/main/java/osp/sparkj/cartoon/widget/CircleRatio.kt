@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.times
 import androidx.core.graphics.toColorInt
-import osp.sparkj.cartoon.extend.todpf
+import osp.sparkj.cartoon.wings.todpf
 
 
 class CircleRatio @JvmOverloads constructor(

@@ -1,4 +1,4 @@
-package osp.sparkj.cartoon.extend
+package osp.sparkj.cartoon.wings
 
 import android.graphics.*
 
