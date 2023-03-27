@@ -5,7 +5,7 @@ plugins {
 
 rootProject.ext.GROUP_ID = "osp.sparkj.ui"
 rootProject.ext.ARTIFACT_ID = "cartoon"
-rootProject.ext.VERSION = "2023.03.19"
+rootProject.ext.VERSION = "2023.03.27"
 
 apply from: file('../publish-plugin.gradle')
 
