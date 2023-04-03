@@ -43,7 +43,7 @@ class CircleRatio @JvmOverloads constructor(
     }
     private val circleDashPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.GRAY
-        strokeWidth = dp2
+        strokeWidth = dp2 / 2
         pathEffect = DashPathEffect(floatArrayOf(dp2 * 2, dp2 * 2), 0F)
         style = Paint.Style.STROKE
     }
@@ -51,34 +51,46 @@ class CircleRatio @JvmOverloads constructor(
         color = Color.RED
         textSize = this@CircleRatio.textSize
     }
+    private val textHeight = run {
+        textPaint.descent() - textPaint.ascent()
+    }
+    private val alignOffset by lazy {
+        val pieceAngle = 360F / datas.size
+        val alignAngle = 90 - pieceAngle / 2
+        (2 * Math.PI * circleBigRadius * alignAngle / 360).toFloat()
+    }
+
     private val dashCirclePath = Path()
     private var maxValue = 0
     private val dataShaders = mutableMapOf<Int, RadialGradient?>()
     private val textPath = Path()
 
     private val datas = listOf<Pair<String, Int>>(
-        "测试" to 3,
-        "测试1" to 1,
-        "测试2" to 2,
-        "测试3" to 4,
-        "测试4" to 5
+        "a测试0" to 3,
+        "b测试11" to 1,
+        "c测试222" to 6,
+        "d测试3333" to 4,
+        "e测试44444" to 5,
+        "e测试55" to 2,
     )
 
-    private val grayColors =
+    private val ordinaryColors =
         intArrayOf(
-            "#EDEEEE".toColorInt(),
-            "#E7E8E8".toColorInt(),
-            "#E1E3E3".toColorInt(),
-            "#DCDEDF".toColorInt(),
-            "#D8DADB".toColorInt()
+            "#9C9B9A".toColorInt(),
+            "#8E8D8C".toColorInt(),
+            "#807F7E".toColorInt(),
+            "#757474".toColorInt(),
+            "#666666".toColorInt(),
+            "#565656".toColorInt()
         )
-    private val greenColors =
+    private val highlightColors =
         intArrayOf(
-            "#E7F3D7".toColorInt(),
-            "#DDF0C5".toColorInt(),
-            "#D4EEB4".toColorInt(),
-            "#CCECA5".toColorInt(),
-            "#C5EA97".toColorInt()
+            "#FE8F77".toColorInt(),
+            "#FD7C60".toColorInt(),
+            "#FE6C4C".toColorInt(),
+            "#FD5E3C".toColorInt(),
+            "#FA4E29".toColorInt(),
+            "#FD3E15".toColorInt(),
         )
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -110,7 +122,7 @@ class CircleRatio @JvmOverloads constructor(
             //shader
             val value = pair.second
             if (value > 1) {
-                stageGradient(value, i)
+                dataShaders[i] = stageGradient(value)
             } else {
                 dataShaders[i] = null
             }
@@ -118,20 +130,20 @@ class CircleRatio @JvmOverloads constructor(
         }.max()
     }
 
-    private fun stageGradient(value: Int, i: Int) {
+    private fun stageGradient(value: Int, gradientColors: IntArray = ordinaryColors): RadialGradient {
         val percent = value.toFloat() / datas.size
         val floatShader = 1f / value
         val size = value * 2 - 2
         val colors = IntArray(size)
         val floats = FloatArray(size) { index ->
-            colors[index] = grayColors[((index + 1) / 2)]
+            colors[index] = gradientColors[((index + 1) / 2)]
             if (index % 2 == 0) {
                 floatShader * (index / 2 + 1)
             } else {
                 floatShader * (index / 2 + 1) + 0.0001f
             }
         }
-        dataShaders[i] = RadialGradient(
+        return RadialGradient(
             0F,
             0F,
             percent * circleBigRadius,
@@ -146,10 +158,13 @@ class CircleRatio @JvmOverloads constructor(
         canvas.translate(width / 2f, height / 2f)
         canvas.drawCircle(0F, 0F, circleBigRadius + dp2, circleBgPaint)
 
-        val num = 5
+        val num = datas.size
         val eachAngle = 360F / num
         var startAngle = -eachAngle / 2 - 90
-        val eachLength = 2 * Math.PI.toFloat() * circleBigRadius / num
+
+        //最外面 文字绘制依赖的圆形的 半径
+        val outerTextCirclePathRadius = circleBigRadius + circlePaint.strokeWidth
+        val eachLength = 2 * Math.PI.toFloat() * outerTextCirclePathRadius / num
 
         //画虚线
         canvas.drawPath(dashCirclePath, circleDashPaint)
@@ -161,15 +176,19 @@ class CircleRatio @JvmOverloads constructor(
 
             //填充扇形
             circleDataPaint.style = Paint.Style.FILL
-            circleDataPaint.color = grayColors[0]
-            circleDataPaint.shader = dataShaders[i]
+            circleDataPaint.color = ordinaryColors[0]
+            if (data.second == maxValue) {
+                circleDataPaint.shader = stageGradient(maxValue, highlightColors)
+            } else {
+                circleDataPaint.shader = dataShaders[i]
+            }
             canvas.drawArc(dataRectF, startAngle, eachAngle, true, circleDataPaint)
 
-            //扇形外环
+            //扇形外环 盖住虚线用的
             if (data.second == maxValue) {
-                circleDataPaint.color = greenColors[0]
+                circleDataPaint.color = highlightColors[highlightColors.size - 1]
             } else {
-                circleDataPaint.color = grayColors[0]
+                circleDataPaint.color = ordinaryColors[data.second - 1]
             }
             circleDataPaint.style = Paint.Style.STROKE
             circleDataPaint.shader = null
@@ -177,15 +196,39 @@ class CircleRatio @JvmOverloads constructor(
 
             //最上层白色扇形边缘
             val scale = (circleBigRadius + circlePaint.strokeWidth) / circleBigRadius
-            canvas.drawArc(circleRectf * scale, startAngle, eachAngle, true, circlePaint)
+            val outerRectF = circleRectf * scale
+            canvas.drawArc(outerRectF, startAngle, eachAngle, true, circlePaint)
 
-            //沿着 园画文字
-            textPath.reset()
-            textPath.addArc(circleRectf, startAngle, eachAngle)
+            //沿着 圆 画文字
+            if (data.second == maxValue) {
+                textPaint.color = Color.RED
+            } else {
+                textPaint.color = Color.BLACK
+            }
             val str = datas[i].first
+//            val str = "$i:${startAngle}"
+            textPath.reset()
             val textWidth = textPaint.measureText(str)
-            val offset = eachLength - textWidth
-            canvas.drawTextOnPath(str, textPath, offset / 2, -textOffsetCicle, textPaint)
+//            canvas.drawLine(0F, 0F, width.toFloat(), 0f, textPaint)
+            val pieceCenterAngel = startAngle + eachAngle / 2
+            if (pieceCenterAngel > 180 || pieceCenterAngel < 0) {
+                textPath.addArc(outerRectF, startAngle, eachAngle)
+                val offset = (eachLength - textWidth) / 2
+                //贴紧 外层白色边框要移动的距离
+                val clingTo = -circlePaint.strokeWidth
+                canvas.drawTextOnPath(
+                    str, textPath, offset, clingTo - textOffsetCicle, textPaint
+                )
+            } else {
+                textPath.addCircle(0F, 0F, outerTextCirclePathRadius, Path.Direction.CCW)
+                val offset = alignOffset + (eachLength - textWidth) / 2 + eachLength * (datas.size - i)
+//                val offset = alignOffset + eachLength * 3
+                //贴紧 外层白色边框要移动的距离
+                val clingTo = -textPaint.ascent()
+                canvas.drawTextOnPath(
+                    str, textPath, offset, clingTo + textOffsetCicle, textPaint
+                )
+            }
             startAngle += eachAngle
         }
     }
