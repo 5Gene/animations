@@ -6,17 +6,13 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.times
 import androidx.core.graphics.toColorInt
+import osp.sparkj.cartoon.wings.gradientColorStops
 import osp.sparkj.cartoon.wings.todpf
 
 
 class CircleRatio @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    fun Int.alpha(alpha: Float): Int {
-        val a = 255.coerceAtMost(0.coerceAtLeast((alpha * 255).toInt())) shl 24
-        val rgb = 0x00Ffffff and this
-        return a + rgb
-    }
 
     val dp2 = 2.todpf
     val dp4 = 4.todpf
@@ -65,14 +61,16 @@ class CircleRatio @JvmOverloads constructor(
     private val dataShaders = mutableMapOf<Int, RadialGradient?>()
     private val textPath = Path()
 
-    private val datas = listOf<Pair<String, Int>>(
-        "a测试0" to 3,
-        "b测试11" to 1,
-        "c测试222" to 6,
-        "d测试3333" to 4,
-        "e测试44444" to 5,
-        "e测试55" to 2,
-    )
+    private val datas = if (isInEditMode)
+        listOf<Pair<String, Int>>(
+            "a测试0" to 3,
+            "b测试11" to 1,
+            "c测试222" to 6,
+            "d测试3333" to 4,
+            "e测试44444" to 5,
+            "e测试55" to 2,
+        )
+    else mutableListOf()
 
     private val ordinaryColors =
         intArrayOf(
@@ -132,17 +130,20 @@ class CircleRatio @JvmOverloads constructor(
 
     private fun stageGradient(value: Int, gradientColors: IntArray = ordinaryColors): RadialGradient {
         val percent = value.toFloat() / datas.size
-        val floatShader = 1f / value
-        val size = value * 2 - 2
-        val colors = IntArray(size)
-        val floats = FloatArray(size) { index ->
-            colors[index] = gradientColors[((index + 1) / 2)]
-            if (index % 2 == 0) {
-                floatShader * (index / 2 + 1)
-            } else {
-                floatShader * (index / 2 + 1) + 0.0001f
-            }
-        }
+//        val floatShader = 1f / value
+//        val size = value * 2 - 2
+//        val colors = IntArray(size)
+//        val floats = FloatArray(size) { index ->
+//            colors[index] = gradientColors[((index + 1) / 2)]
+//            if (index % 2 == 0) {
+//                floatShader * (index / 2 + 1)
+//            } else {
+//                floatShader * (index / 2 + 1) + 0.0001f
+//            }
+//        }
+        val colorStops = gradientColorStops(value, gradientColors.toList())
+        val colors = IntArray(colorStops.size) { i -> colorStops[i].second }
+        val floats = FloatArray(colorStops.size) { i -> colorStops[i].first }
         return RadialGradient(
             0F,
             0F,
