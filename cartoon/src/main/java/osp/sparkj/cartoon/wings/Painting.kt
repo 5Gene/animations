@@ -10,6 +10,9 @@ import android.graphics.*
  * <p><a href="https://github.com/mychoices">github</a>
  */
 
+/**
+ * @param ten 是否绘制中间十字辅助线
+ */
 inline fun Bitmap.paint(ten: Boolean = false, drawing: (Canvas, Bitmap) -> Unit): Bitmap {
     val bitmap = this.copy(Bitmap.Config.ARGB_8888, true)
     val canvas = Canvas(bitmap)
@@ -23,11 +26,19 @@ inline fun Bitmap.paint(ten: Boolean = false, drawing: (Canvas, Bitmap) -> Unit)
     return bitmap
 }
 
+/**
+ * 左上角原点 x向右，y向下 坐标系 转为正常坐标系，左下角原点，x向右，y向上
+ * @param xOffset 原点 x轴偏移 距离左边偏移
+ * @param yOffset 原点 y轴偏移 距离底部偏移
+ */
 fun Canvas.coordinateSystemNormal(xOffset: Float = 0F, yOffset: Float = 0F) {
     translate(xOffset, height - yOffset)
     scale(1F, -1F)
 }
 
+/**
+ * 转为数学体系正常坐标系，原点为中点
+ */
 fun Canvas.coordinateSystemCenter() {
     translate(width / 2F, height / 2F)
     scale(1F, -1F)
