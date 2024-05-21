@@ -1,55 +1,97 @@
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    id("com.vanniktech.maven.publish") version "0.28.0"
+    alias(wings.plugins.compose)
 }
 
 rootProject.ext.GROUP_ID = "osp.sparkj.ui"
 rootProject.ext.ARTIFACT_ID = "cartoon"
 rootProject.ext.VERSION = "2023.06.22"
 
-apply from: file('../publish-plugin.gradle')
+group = "io.github.5hmla"
+version = "1.0"
+
+//apply from: file('../publish-plugin.gradle')
 
 android {
-    compileSdk 34
-
-    defaultConfig {
-        minSdk 26
-        targetSdk 34
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-    lint {
-        baseline = file("lint-baseline.xml")
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        freeCompilerArgs = ["-Xcontext-receivers"]
-        jvmTarget = '11'
-    }
     namespace 'osp.sparkj.cartoon'
+    buildTypes {
+        release {}
+    }
+//    publishing {
+//        singleVariant("release") {
+//            withSourcesJar()
+//        }
+//    }
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation "androidx.annotation:annotation:1.6.0"
 //    https://developer.android.google.cn/develop/ui/views/animations/spring-animation?hl=en
 //    https://developer.android.google.cn/jetpack/androidx/releases/dynamicanimation
     implementation 'androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.compose.animation:animation-core:1.4.1'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03'
+    implementation 'androidx.compose.animation:animation-core:1.6.7'
 }
+
+
+mavenPublishing {
+    coordinates(group, "cartoon", "1.0")
+    pom {
+        name.set("cartoon")
+
+        description.set("android animations library")
+        url.set("https://github.com/5hmla/animations")
+
+        inceptionYear.set("2080")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        developers {
+            developer {
+                id.set("5hmla")
+                name.set("5hmla")
+                email.set("jonsa.jzy@gmail.com")
+                url.set("https://github.com/5hmla")
+            }
+        }
+        scm {
+            connection.set("scm:git:https://github.com/5hmla/animations.git")
+            developerConnection.set("scm:git:ssh://github.com/5hmla/animations.git")
+            url.set("https://github.com/5hmla/animations")
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = 'LocalTest'
+            setUrl("repos")
+        }
+    }
+    publications {
+        //name会成为任务名字的一部分 publish [Surgery] PublicationToLocalTestRepository
+        osp(MavenPublication) {
+            groupId group
+            artifactId "cartoon"
+            version "1.0"
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}
+//publications {
+//    register<MavenPublication>("release") {
+//        groupId = "com.my-company"
+//        artifactId = "my-library"
+//        version = "1.0"
+//
+//        afterEvaluate {
+//            from(components["release"])
+//        }
+//    }
+//}

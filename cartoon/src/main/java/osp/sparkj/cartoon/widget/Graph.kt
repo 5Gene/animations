@@ -139,7 +139,7 @@ class ProgressGraph @JvmOverloads constructor(
     }
 
     private fun covertInner() {
-        if (points == null || points.isEmpty()) {
+        if (points.isEmpty()) {
             return
         }
         val max = points.maxByOrNull {

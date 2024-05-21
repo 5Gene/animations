@@ -28,13 +28,22 @@ class ScaleTransition : Visibility() {
     }
 
     override fun onAppear(
-        sceneRoot: ViewGroup?,
+        sceneRoot: ViewGroup,
         view: View,
-        startValues: TransitionValues,
+        startValues: TransitionValues?,
         endValues: TransitionValues?
     ): Animator? {
-        return to1(startValues, view)
+        return super.onAppear(sceneRoot, view, startValues, endValues)
     }
+
+//    override fun onAppear(
+//        sceneRoot: ViewGroup?,
+//        view: View,
+//        startValues: TransitionValues,
+//        endValues: TransitionValues?
+//    ): Animator? {
+//        return to1(startValues, view)
+//    }
 
     private fun to1(
         startValues: TransitionValues,
@@ -57,14 +66,23 @@ class ScaleTransition : Visibility() {
         return animatorSet
     }
 
-    override fun onDisappear(
-        sceneRoot: ViewGroup?,
-        view: View,
-        startValues: TransitionValues,
-        endValues: TransitionValues?
-    ): Animator {
-        return to0(startValues, view)
-    }
+
+//    override fun onDisappear(
+//        sceneRoot: ViewGroup,
+//        view: View,
+//        startValues: TransitionValues,
+//        endValues: TransitionValues?
+//    ): Animator? {
+//        return super.onDisappear(sceneRoot, view, startValues, endValues)
+//    }
+//    override fun onDisappear(
+//        sceneRoot: ViewGroup?,
+//        view: View,
+//        startValues: TransitionValues,
+//        endValues: TransitionValues?
+//    ): Animator {
+//        return to0(startValues, view)
+//    }
 
     private fun to0(
         startValues: TransitionValues,

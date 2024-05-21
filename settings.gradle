@@ -6,7 +6,13 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    versionCatalogs {
+        // declares an additional catalog, named 'testLibs', from the 'test-libs.versions.toml' file
+        create("wings") {
+            from(files("gradle/wings.versions.toml"))
+        }
+    }
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
