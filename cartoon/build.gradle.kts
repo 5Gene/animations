@@ -2,13 +2,13 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     id("com.android.library")
-    id("com.vanniktech.maven.publish") version "0.28.0"
-    alias(wings.plugins.compose)
+    alias(wings.plugins.android)
     `maven-publish`
+    id("com.vanniktech.maven.publish") version "0.28.0"
 }
 
 group = "io.github.5hmlA"
-version = "1.1"
+version = "1.0"
 
 //apply from: file('../publish-plugin.gradle')
 
@@ -30,11 +30,10 @@ dependencies {
     implementation("androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
     implementation("androidx.compose.animation:animation-core:1.6.7")
+    implementation(libs.androidx.core.ktx)
+    implementation("androidx.transition:transition-ktx:1.5.0")
 }
 
-
-mavenPublishing {
-}
 
 val gitUrl: String by lazy {
     val stdout = ByteArrayOutputStream()
@@ -45,6 +44,14 @@ val gitUrl: String by lazy {
     val remoteUrl = stdout.toString().trim()
     println("Remote URL: ${remoteUrl.removeSuffix(".git")}")
     remoteUrl
+}
+
+
+println("xxxxxxxxxxx ${properties["mavenCentralUsername"]}")
+println("xxxxxxxxxxx ${properties["mavenCentralPassword"]}")
+
+mavenPublishing {
+    coordinates("io.github.5hmla", "cartoon", "1.0")
 }
 
 publishing {
@@ -59,13 +66,12 @@ publishing {
             groupId = group.toString().lowercase()
 //            artifactId = name
             version = "1.0"
-
             afterEvaluate {
                 from(components["release"])
             }
 
             pom {
-                description = "android animations library"
+                description = "android animations library 🚀"
                 url = gitUrl.removeSuffix(".git")
                 licenses {
                     license {
