@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.5gene"
-version = "0.1"
+version = "1.0"
 
 android {
     namespace = "osp.sparkj.cartoon"
