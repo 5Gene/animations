@@ -1,4 +1,4 @@
-import wing.publish5hmlA
+import wing.publishMavenCentral
 
 plugins {
     id("com.android.library")
@@ -15,7 +15,7 @@ android {
     }
 }
 
-publish5hmlA("cartoon", withSource = true)
+publishMavenCentral("cartoon", withSource = true)
 
 dependencies {
 //    https://developer.android.google.cn/develop/ui/views/animations/spring-animation?hl=en
