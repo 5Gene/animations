@@ -6,13 +6,10 @@ plugins {
 }
 
 group = "io.github.5gene"
-version = "1.0"
+version = wings.versions.cartoon.get()
 
 android {
     namespace = "osp.sparkj.cartoon"
-    buildTypes {
-        release {}
-    }
 }
 
 publishMavenCentral("cartoon", withSource = true)
