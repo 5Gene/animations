@@ -1,3 +1,4 @@
+import wing.GroupIdMavenCentral
 import wing.publishMavenCentral
 
 plugins {
@@ -5,8 +6,8 @@ plugins {
     alias(vcl.plugins.gene.android)
 }
 
-group = "io.github.5gene"
-version = wings.versions.cartoon.get()
+group = GroupIdMavenCentral
+version = libs.versions.gene.cartoon.get()
 
 android {
     namespace = "osp.sparkj.cartoon"
