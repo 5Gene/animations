@@ -1,5 +1,5 @@
-import wing.GroupIdMavenCentral
-import wing.publishMavenCentral
+import june.wing.GroupIdMavenCentral
+import june.wing.publishAndroidMavenCentral
 
 plugins {
     id("com.android.library")
@@ -13,7 +13,7 @@ android {
     namespace = "osp.sparkj.cartoon"
 }
 
-publishMavenCentral("cartoon", withSource = true)
+publishAndroidMavenCentral("cartoon")
 
 dependencies {
 //    https://developer.android.google.cn/develop/ui/views/animations/spring-animation?hl=en
