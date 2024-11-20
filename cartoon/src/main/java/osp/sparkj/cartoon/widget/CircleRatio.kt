@@ -6,19 +6,19 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.times
 import androidx.core.graphics.toColorInt
+import osp.sparkj.cartoon.wings.dpf
 import osp.sparkj.cartoon.wings.gradientColorStops
-import osp.sparkj.cartoon.wings.todpf
 
 
 class CircleRatio @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    val dp2 = 2.todpf
-    val dp4 = 4.todpf
-    val dp20 = 20.todpf
+    val dp2 = 2.dpf()
+    val dp4 = 4.dpf()
+    val dp20 = 20.dpf()
 
-    private val textOffsetCicle = 9.todpf
+    private val textOffsetCicle = 9.dpf()
     private var circleRectf = RectF()
     private val textSize = dp20
     private var circleBigRadius = 0F

@@ -18,7 +18,7 @@ inline fun Bitmap.paint(ten: Boolean = false, drawing: (Canvas, Bitmap) -> Unit)
     val canvas = Canvas(bitmap)
     if (ten) {
         val debugPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.YELLOW }
-        debugPaint.strokeWidth = 1.todpf
+        debugPaint.strokeWidth = 1.dpf()
         canvas.drawLine(width / 2F, 0F, width / 2F, height.toFloat(), debugPaint)
         canvas.drawLine(0F, height / 2F, width.toFloat(), height / 2F, debugPaint)
     }
@@ -106,7 +106,7 @@ inline fun Canvas.transForm(
 //                    canvas.translate(width / 2, height / 2 - topOffsetValue)
 //                    canvas.scale(widthScaleValue, 1F)
 //                    camera.save()
-//                    camera.setLocation(0F, 0F, (-30).todpf)
+//                    camera.setLocation(0F, 0F, (-30).dpf())
 //                    camera.rotateX(-180F * ani)
 //                    camera.applyToCanvas(canvas)
 //                    camera.restore()

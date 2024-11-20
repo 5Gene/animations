@@ -5,7 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.CallSuper
-import osp.sparkj.cartoon.wings.todpf
+import osp.sparkj.cartoon.wings.dpf
 import kotlin.concurrent.thread
 
 
@@ -32,7 +32,7 @@ abstract class Graph @JvmOverloads constructor(
     val debugPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.YELLOW
         style = Paint.Style.STROKE
-        strokeWidth = 1.todpf
+        strokeWidth = 1.dpf()
     }
 
     fun coordinateSystemHeight(paint: Paint?): Float {
@@ -62,7 +62,7 @@ class ProgressGraph @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : Graph(context, attrs, defStyleAttr) {
 
-    val dp5 = 5.todpf
+    val dp5 = 5.dpf()
 
     override val yOffset: Float by lazy {
         dp5
@@ -72,7 +72,7 @@ class ProgressGraph @JvmOverloads constructor(
     val linePath = Path()
     val bgLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.parseColor("#33FFFFFF")
-        strokeWidth = 2.todpf
+        strokeWidth = 2.dpf()
         strokeJoin = Paint.Join.ROUND
         style = Paint.Style.STROKE
         pathEffect = CornerPathEffect(10F)
@@ -80,7 +80,7 @@ class ProgressGraph @JvmOverloads constructor(
 
     val progPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
-        strokeWidth = 1.todpf
+        strokeWidth = 1.dpf()
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
         pathEffect = CornerPathEffect(10F)

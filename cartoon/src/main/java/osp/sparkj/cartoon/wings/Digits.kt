@@ -1,5 +1,6 @@
 package osp.sparkj.cartoon.wings
 
+import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Color
 import android.util.TypedValue
@@ -14,15 +15,10 @@ import android.util.TypedValue
 fun Int.alpha(alpha: Number) =
     Color.argb((alpha.toFloat() * 255).toInt(), Color.red(this), Color.green(this), Color.blue(this))
 
-inline val Number.todp: Int
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(),
-        Resources.getSystem().displayMetrics
-    ).toInt()
+fun Number.dp(context: Activity? = null): Int = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), (context?.resources ?: Resources.getSystem()).displayMetrics
+).toInt()
 
-inline val Number.todpf
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        Resources.getSystem().displayMetrics
-    )
+fun Number.dpf(context: Activity? = null): Float = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), (context?.resources ?: Resources.getSystem()).displayMetrics
+)
