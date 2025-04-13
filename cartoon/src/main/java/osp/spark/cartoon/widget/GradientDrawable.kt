@@ -1,6 +1,13 @@
-package osp.sparkj.cartoon.widget
+package osp.spark.cartoon.widget
 
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.PixelFormat
+import android.graphics.Rect
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
 
 /**

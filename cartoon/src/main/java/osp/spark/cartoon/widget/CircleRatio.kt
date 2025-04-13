@@ -1,13 +1,20 @@
-package osp.sparkj.cartoon.widget
+package osp.spark.cartoon.widget
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.DashPathEffect
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.RadialGradient
+import android.graphics.RectF
+import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.times
 import androidx.core.graphics.toColorInt
-import osp.sparkj.cartoon.wings.dpf
-import osp.sparkj.cartoon.wings.gradientColorStops
+import osp.spark.cartoon.wings.dpf
+import osp.spark.cartoon.wings.gradientColorStops
 
 
 class CircleRatio @JvmOverloads constructor(

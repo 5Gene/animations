@@ -1,4 +1,4 @@
-package osp.sparkj.cartoon.curves
+package osp.spark.cartoon.curves
 
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator

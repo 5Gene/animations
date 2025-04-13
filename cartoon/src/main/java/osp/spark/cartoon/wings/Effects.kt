@@ -1,4 +1,4 @@
-package osp.sparkj.cartoon.wings
+package osp.spark.cartoon.wings
 
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter

@@ -1,9 +1,8 @@
-package osp.sparkj.cartoon.curves
+package osp.spark.cartoon.curves
 
 import android.view.animation.Interpolator
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Easing
-import kotlin.math.absoluteValue
 
 /**
  * @author yun.

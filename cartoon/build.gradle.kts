@@ -6,20 +6,20 @@ plugins {
     alias(vcl.plugins.gene.android)
 }
 
-group = GroupIdMavenCentral
-version = libs.versions.gene.cartoon.get()
-
 android {
-    namespace = "osp.sparkj.cartoon"
+    namespace = "osp.spark.cartoon"
 }
 
+group = GroupIdMavenCentral
+version = libs.versions.gene.cartoon.get()
 publishAndroidMavenCentral("cartoon")
 
 dependencies {
 //    https://developer.android.google.cn/develop/ui/views/animations/spring-animation?hl=en
 //    https://developer.android.google.cn/jetpack/androidx/releases/dynamicanimation
-    implementation("androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03")
-    implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
-    implementation("androidx.compose.animation:animation-core:1.7.2")
-    implementation("androidx.transition:transition-ktx:1.5.0")
+    implementation(vcl.androidx.dynamicanimation.ktx)
+    implementation(vcl.androidx.transition.ktx)
+    val composeBom = platform(vcl.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(vcl.androidx.compose.animation.core)
 }

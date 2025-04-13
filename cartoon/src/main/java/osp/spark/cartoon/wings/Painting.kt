@@ -1,6 +1,11 @@
-package osp.sparkj.cartoon.wings
+package osp.spark.cartoon.wings
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Camera
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
 
 /**
  * @author yun.

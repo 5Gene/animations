@@ -1,11 +1,18 @@
-package osp.sparkj.cartoon.widget
+package osp.spark.cartoon.widget
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.CornerPathEffect
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PointF
+import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.CallSuper
-import osp.sparkj.cartoon.wings.dpf
+import osp.spark.cartoon.wings.dpf
 import kotlin.concurrent.thread
 
 

@@ -1,6 +1,4 @@
-package osp.sparkj.cartoon.wings
-
-import java.lang.IllegalArgumentException
+package osp.spark.cartoon.wings
 
 
 /**

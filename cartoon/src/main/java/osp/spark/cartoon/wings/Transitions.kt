@@ -1,11 +1,19 @@
-package osp.sparkj.cartoon.wings
+package osp.spark.cartoon.wings
 
-import android.animation.*
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.LayoutTransition
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
-import androidx.transition.*
-import osp.sparkj.cartoon.curves.Curve
+import androidx.transition.ChangeBounds
+import androidx.transition.Transition
+import androidx.transition.TransitionSet
+import androidx.transition.TransitionValues
+import androidx.transition.Visibility
+import osp.spark.cartoon.curves.Curve
 
 /**
  * @author yun.

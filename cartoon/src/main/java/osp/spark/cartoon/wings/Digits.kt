@@ -1,4 +1,4 @@
-package osp.sparkj.cartoon.wings
+package osp.spark.cartoon.wings
 
 import android.app.Activity
 import android.content.res.Resources
