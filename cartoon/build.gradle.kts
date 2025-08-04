@@ -1,4 +1,5 @@
 import june.wing.GroupIdMavenCentral
+import june.wing.beijingTimeVersion
 import june.wing.publishAndroidMavenCentral
 
 plugins {
@@ -11,7 +12,7 @@ android {
 }
 
 group = GroupIdMavenCentral
-version = libs.versions.gene.cartoon.get()
+version = beijingTimeVersion
 publishAndroidMavenCentral("cartoon")
 
 dependencies {
